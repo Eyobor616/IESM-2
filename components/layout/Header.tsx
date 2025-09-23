@@ -1,6 +1,7 @@
+
 import React, { useState, useRef, useEffect } from 'react';
-import { useApp } from '../../context/AppContext';
-import { Notification } from '../../types';
+import { useApp } from '../../context/AppContext.tsx';
+import { Notification } from '../../types.ts';
 
 const Header: React.FC = () => {
   const { currentUser, logout, notifications, markNotificationAsRead } = useApp();

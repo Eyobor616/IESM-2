@@ -1,8 +1,8 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { initialUsers, initialCourses, initialQuizzes } from '../data/initialData';
-import { User, Course, Enrollment, Quiz, QuizAttempt, Certificate, Review, Notification, Lesson } from '../types';
+import { useLocalStorage } from '../hooks/useLocalStorage.ts';
+import { initialUsers, initialCourses, initialQuizzes } from '../data/initialData.ts';
+import { User, Course, Enrollment, Quiz, QuizAttempt, Certificate, Review, Notification, Lesson } from '../types.ts';
 
 interface AppContextType {
   users: User[];

@@ -1,5 +1,5 @@
 
-import { User, Course, Quiz, UserRole, LessonType } from '../types';
+import { User, Course, Quiz, UserRole, LessonType } from '../types.ts';
 
 export const initialUsers: User[] = [
   { id: 'user-1', name: 'Alice Johnson', email: 'alice@example.com', role: UserRole.STUDENT, avatarUrl: 'https://picsum.photos/seed/alice/100' },

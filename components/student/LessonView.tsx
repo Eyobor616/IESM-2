@@ -1,6 +1,7 @@
+
 import React from 'react';
-import { useApp } from '../../context/AppContext';
-import { Course, Lesson, LessonType } from '../../types';
+import { useApp } from '../../context/AppContext.tsx';
+import { Course, Lesson, LessonType } from '../../types.ts';
 
 interface LessonViewProps {
   course: Course;

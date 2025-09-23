@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { UserRole } from '../../types';
+import { useApp } from '../../context/AppContext.tsx';
+import { UserRole } from '../../types.ts';
 
 const UserManagement: React.FC = () => {
     const { users, addUser } = useApp();

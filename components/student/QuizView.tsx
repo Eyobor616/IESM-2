@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { Course, Quiz } from '../../types';
+import { useApp } from '../../context/AppContext.tsx';
+import { Course, Quiz } from '../../types.ts';
 
 interface QuizViewProps {
   course: Course;

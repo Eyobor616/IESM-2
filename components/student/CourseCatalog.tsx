@@ -1,6 +1,7 @@
+
 import React, { useState, useMemo } from 'react';
-import { useApp } from '../../context/AppContext';
-import { Course, UserRole } from '../../types';
+import { useApp } from '../../context/AppContext.tsx';
+import { Course, UserRole } from '../../types.ts';
 
 type View = 'dashboard' | 'courses' | 'course-detail' | 'user-management' | 'course-builder' | 'my-courses';
 

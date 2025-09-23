@@ -1,6 +1,7 @@
+
 import React from 'react';
-import { useApp } from '../../context/AppContext';
-import { UserRole } from '../../types';
+import { useApp } from '../../context/AppContext.tsx';
+import { UserRole } from '../../types.ts';
 
 type View = 'dashboard' | 'courses' | 'course-detail' | 'user-management' | 'course-builder' | 'my-courses';
 

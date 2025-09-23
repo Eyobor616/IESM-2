@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { Lesson } from '../../types';
-import LessonView from './LessonView';
-import QuizView from './QuizView';
+import { useApp } from '../../context/AppContext.tsx';
+import { Lesson } from '../../types.ts';
+import LessonView from './LessonView.tsx';
+import QuizView from './QuizView.tsx';
 
 type View = 'dashboard' | 'courses' | 'course-detail' | 'user-management' | 'course-builder' | 'my-courses';
 

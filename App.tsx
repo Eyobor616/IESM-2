@@ -1,14 +1,15 @@
+
 import React, { useState, useEffect } from 'react';
-import { useApp } from './context/AppContext';
-import { UserRole } from './types';
-import Sidebar from './components/layout/Sidebar';
-import Header from './components/layout/Header';
-import UserSelection from './components/auth/UserSelection';
-import Dashboard from './components/student/Dashboard';
-import CourseCatalog from './components/student/CourseCatalog';
-import CourseDetail from './components/student/CourseDetail';
-import UserManagement from './components/admin/UserManagement';
-import CourseBuilder from './components/instructor/CourseBuilder';
+import { useApp } from './context/AppContext.tsx';
+import { UserRole } from './types.ts';
+import Sidebar from './components/layout/Sidebar.tsx';
+import Header from './components/layout/Header.tsx';
+import UserSelection from './components/auth/UserSelection.tsx';
+import Dashboard from './components/student/Dashboard.tsx';
+import CourseCatalog from './components/student/CourseCatalog.tsx';
+import CourseDetail from './components/student/CourseDetail.tsx';
+import UserManagement from './components/admin/UserManagement.tsx';
+import CourseBuilder from './components/instructor/CourseBuilder.tsx';
 
 type View = 'dashboard' | 'courses' | 'course-detail' | 'user-management' | 'course-builder' | 'my-courses';
 
