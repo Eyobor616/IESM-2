@@ -105,13 +105,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
   
   const submitQuiz = (attempt: QuizAttempt) => {
+    // Record the quiz attempt
     setQuizAttempts([...quizAttempts, attempt]);
+    
+    // Find the course associated with this quiz
     const course = courses.find(c => c.quizId === attempt.quizId);
-    if(course) {
-        const enrollment = getEnrollment(attempt.userId, course.id);
-        if (enrollment && enrollment.progress === 100 && attempt.score >= 70) { // Passing score 70%
-            addCertificate(attempt.userId, course.id);
-        }
+    
+    if (course) {
+      const enrollment = getEnrollment(attempt.userId, course.id);
+      
+      // Check for passing conditions: user is enrolled, has completed all lessons, and passed the quiz
+      const hasPassed = attempt.score >= 70; // Passing score is 70%
+      const isCourseComplete = enrollment?.progress === 100;
+
+      if (enrollment && isCourseComplete && hasPassed) {
+        addCertificate(attempt.userId, course.id);
+      }
     }
   };
 
