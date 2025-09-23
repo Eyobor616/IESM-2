@@ -1,4 +1,15 @@
 
+// FIX: Centralize the View type to be used across components.
+export type View = 
+  | 'dashboard' 
+  | 'courses' 
+  | 'course-detail' 
+  | 'user-management' 
+  | 'course-builder' 
+  | 'my-courses'
+  | 'lesson-view'
+  | 'quiz-view';
+
 export enum UserRole {
   STUDENT = 'STUDENT',
   INSTRUCTOR = 'INSTRUCTOR',

@@ -1,20 +1,20 @@
 
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext.tsx';
-import { Lesson } from '../../types.ts';
-import LessonView from './LessonView.tsx';
-import QuizView from './QuizView.tsx';
+// FIX: Import centralized View type.
+import { Course, Lesson, Quiz, View } from '../../types.ts';
 
-type View = 'dashboard' | 'courses' | 'course-detail' | 'user-management' | 'course-builder' | 'my-courses';
+// FIX: Removed local 'View' type definition. The centralized 'View' type is now imported from '../../types.ts'.
 
 interface CourseDetailProps {
-  courseId: string;
+  course: Course;
   navigateTo: (view: View, courseId?: string | null) => void;
+  openLesson: (lesson: Lesson, courseId: string) => void;
+  openQuiz: (quiz: Quiz, courseId: string) => void;
 }
 
-const CourseDetail: React.FC<CourseDetailProps> = ({ courseId, navigateTo }) => {
+const CourseDetail: React.FC<CourseDetailProps> = ({ course, navigateTo, openLesson, openQuiz }) => {
   const { 
-    getCourseById, 
     getUserById, 
     currentUser, 
     getEnrollment, 
@@ -24,30 +24,15 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ courseId, navigateTo }) => 
     addReview
   } = useApp();
   
-  const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
-  const [viewingQuiz, setViewingQuiz] = useState<boolean>(false);
   const [reviewRating, setReviewRating] = useState(0);
   const [reviewComment, setReviewComment] = useState("");
 
-  const course = getCourseById(courseId);
-  
   if (!currentUser) return null;
   
-  const enrollment = getEnrollment(currentUser.id, courseId);
-  const quiz = course?.quizId ? getQuizById(course.quizId) : undefined;
-  const reviews = getReviewsForCourse(courseId);
+  const enrollment = getEnrollment(currentUser.id, course.id);
+  const quiz = course.quizId ? getQuizById(course.quizId) : undefined;
+  const reviews = getReviewsForCourse(course.id);
   
-  if (!course) {
-    return (
-      <div>
-        <h1 className="text-2xl font-bold">Course not found</h1>
-        <button onClick={() => navigateTo('courses')} className="mt-4 px-4 py-2 bg-brand-accent text-white rounded">
-          Back to Courses
-        </button>
-      </div>
-    );
-  }
-
   const instructorNames = course.instructorIds.map(id => getUserById(id)?.name).join(', ');
 
   const handleEnroll = () => {
@@ -68,14 +53,6 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ courseId, navigateTo }) => 
     }
   };
 
-  if (activeLesson) {
-    return <LessonView course={course} lesson={activeLesson} onBack={() => setActiveLesson(null)} />;
-  }
-
-  if (viewingQuiz && quiz) {
-    return <QuizView course={course} quiz={quiz} onBack={() => setViewingQuiz(false)} />;
-  }
-  
   const isCourseCompleted = enrollment?.progress === 100;
 
   return (
@@ -116,7 +93,7 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ courseId, navigateTo }) => 
                     {course.lessons.map((lesson, index) => {
                         const isCompleted = enrollment?.completedLessons.includes(lesson.id);
                         return (
-                            <li key={lesson.id} onClick={() => enrollment && setActiveLesson(lesson)} className={`flex items-center justify-between p-4 rounded-lg border transition-colors ${enrollment ? 'cursor-pointer hover:bg-gray-100 hover:border-brand-secondary' : 'bg-gray-50 opacity-70'}`}>
+                            <li key={lesson.id} onClick={() => enrollment && openLesson(lesson, course.id)} className={`flex items-center justify-between p-4 rounded-lg border transition-colors ${enrollment ? 'cursor-pointer hover:bg-gray-100 hover:border-brand-secondary' : 'bg-gray-50 opacity-70'}`}>
                                 <div className="flex items-center">
                                     <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200 text-medium-text'}`}>
                                       {isCompleted ? '✓' : index + 1}
@@ -137,7 +114,7 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ courseId, navigateTo }) => 
                 <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <h2 className="text-2xl font-bold text-dark-text mb-4">Final Quiz</h2>
                     <p className="text-medium-text mb-4">{quiz.title}</p>
-                    <button onClick={() => enrollment && setViewingQuiz(true)} disabled={!enrollment || !isCourseCompleted} className="px-6 py-2 bg-brand-secondary text-white font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:bg-gray-300 disabled:cursor-not-allowed">
+                    <button onClick={() => enrollment && openQuiz(quiz, course.id)} disabled={!enrollment || !isCourseCompleted} className="px-6 py-2 bg-brand-secondary text-white font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:bg-gray-300 disabled:cursor-not-allowed">
                         {isCourseCompleted ? 'Start Quiz' : 'Complete all lessons to start quiz'}
                     </button>
                 </div>

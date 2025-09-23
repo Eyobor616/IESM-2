@@ -1,8 +1,8 @@
 
-import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage.ts';
 import { initialUsers, initialCourses, initialQuizzes } from '../data/initialData.ts';
-import { User, Course, Enrollment, Quiz, QuizAttempt, Certificate, Review, Notification, Lesson } from '../types.ts';
+import { User, Course, Enrollment, Quiz, QuizAttempt, Certificate, Review, Notification } from '../types.ts';
 
 interface AppContextType {
   users: User[];
@@ -69,6 +69,29 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   
+  const addNotification = (notification: Omit<Notification, 'id' | 'timestamp'>) => {
+      const newNotification: Notification = {
+          ...notification,
+          id: `notif-${Date.now()}`,
+          timestamp: Date.now(),
+      };
+      setNotifications([newNotification, ...notifications]);
+  };
+
+  const addCertificate = (userId: string, courseId: string) => {
+      const course = getCourseById(courseId);
+      if(course && !certificates.find(c => c.userId === userId && c.courseId === courseId)){
+          const newCertificate: Certificate = {
+              id: `cert-${Date.now()}`,
+              userId,
+              courseId,
+              issueDate: new Date().toISOString(),
+          };
+          setCertificates([...certificates, newCertificate]);
+          addNotification({ userId, message: `Congratulations! You've earned a certificate for "${course.title}".`, isRead: false });
+      }
+  };
+
   const completeLesson = (userId: string, courseId: string, lessonId: string) => {
     const enrollment = getEnrollment(userId, courseId);
     const course = getCourseById(courseId);
@@ -89,33 +112,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       }
     }
   };
-
-  const addCertificate = (userId: string, courseId: string) => {
-      const course = getCourseById(courseId);
-      if(course && !certificates.find(c => c.userId === userId && c.courseId === courseId)){
-          const newCertificate: Certificate = {
-              id: `cert-${Date.now()}`,
-              userId,
-              courseId,
-              issueDate: new Date().toISOString(),
-          };
-          setCertificates([...certificates, newCertificate]);
-          addNotification({ userId, message: `Congratulations! You've earned a certificate for "${course.title}".`, isRead: false });
-      }
-  };
   
   const submitQuiz = (attempt: QuizAttempt) => {
-    // Record the quiz attempt
     setQuizAttempts([...quizAttempts, attempt]);
     
-    // Find the course associated with this quiz
     const course = courses.find(c => c.quizId === attempt.quizId);
     
     if (course) {
       const enrollment = getEnrollment(attempt.userId, course.id);
       
-      // Check for passing conditions: user is enrolled, has completed all lessons, and passed the quiz
-      const hasPassed = attempt.score >= 70; // Passing score is 70%
+      const hasPassed = attempt.score >= 70;
       const isCourseComplete = enrollment?.progress === 100;
 
       if (enrollment && isCourseComplete && hasPassed) {
@@ -131,17 +137,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         date: new Date().toISOString(),
     };
     setReviews([...reviews, newReview]);
-  };
-
-  const addNotification = (notification: Omit<Notification, 'id' | 'timestamp'>) => {
-      const newNotification: Notification = {
-          ...notification,
-          id: `notif-${Date.now()}`,
-          timestamp: Date.now(),
-      };
-      // FIX: The setter from useLocalStorage does not support a callback function.
-      // We need to construct the new array with the current state value.
-      setNotifications([newNotification, ...notifications]);
   };
 
   const markNotificationAsRead = (notificationId: string) => {

@@ -1,9 +1,10 @@
 
 import React from 'react';
 import { useApp } from '../../context/AppContext.tsx';
-import { Course } from '../../types.ts';
+// FIX: Import centralized View type.
+import { Course, View } from '../../types.ts';
 
-type View = 'dashboard' | 'courses' | 'course-detail' | 'user-management' | 'course-builder' | 'my-courses';
+// FIX: Removed local 'View' type definition. The centralized 'View' type is now imported from '../../types.ts'.
 
 interface DashboardProps {
   navigateTo: (view: View, courseId?: string | null) => void;
