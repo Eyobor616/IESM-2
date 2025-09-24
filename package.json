@@ -1,1 +1,25 @@
-{\n  "name": "IESM-2",\n  "version": "1.0.0",\n  "homepage": "https://eyobor616.github.io/IESM-2",\n  "private": true,\n  "type": "module",\n  "scripts": {\n    "dev": "vite",\n    "build": "vite build",\n    "preview": "vite preview",\n    "predeploy": "npm run build",\n    "deploy": "gh-pages -d dist"\n  },\n  "dependencies": {\n    "react": "^19.1.1",\n    "react-dom": "^19.1.1"\n  },\n  "devDependencies": {\n    "@types/node": "^22.14.0",\n    "@vitejs/plugin-react": "^5.0.0",\n    "typescript": "~5.8.2",\n    "vite": "^6.2.0",\n    "gh-pages": "^6.0.0"\n  }\n}
+{
+  "name": "IESM-2",
+  "version": "1.0.0",
+  "homepage": "https://eyobor616.github.io/IESM-2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "gh-pages": "^6.0.0"
+  }
+}
