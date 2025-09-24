@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext.tsx';
 import { Course, Lesson, LessonType, User, Attachment } from '../../types.ts';
